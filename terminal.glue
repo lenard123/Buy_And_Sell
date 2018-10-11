@@ -1,0 +1,9 @@
+ █ [ C:\xampp\htdocs\git\Buy_and_Sell ] php artisan make:controller API/v1/Message/GetController
+Controller created successfully.
+
+█ [ C:\xampp\htdocs\git\Buy_and_Sell ] php artisan make:model Model/Message
+Model created successfully.
+
+█ [ C:\xampp\htdocs\git\Buy_and_Sell ] php artisan make:controller API/v1/Message/SendController
+Controller created successfully.
+

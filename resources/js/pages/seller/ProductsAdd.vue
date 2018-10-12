@@ -5,77 +5,79 @@
 			<h4 class="card-title">Add Product</h4>
 			<hr/>
 
-			<form class="row" @submit.prevent="submit()">
+			<form @submit.prevent="submit()">
 
-				<div class="col-md-3">
-					<l-uploader :img-src="$l.getLink(3)" file-id="image"/>
+				<div class="form-group d-flex" style="overflow-x: auto;">
+					<img :src="image" v-for="image in images" v-if="image !== false" height="140" width="140" class="thumbnail" style=" margin: 0px 3px;" />
+					<div class="img-add" @click="addImage()" v-if="active_image<images.length" style=" margin: 0px 3px;">
+						<i class="fas fa-plus"></i>
+					</div>
+					<input type="file" class="d-none" :id="'img-'+i" v-for="(image,i) in images" @change="displayImage(i)"/>
+				</div>		
+
+
+				<div class="form-group">
+					<label>Category</label>
+					<select class="form-control" v-model="product.category_id" required>
+						<option v-for="category in categories" :value="category.id">
+							{{ category.name }}
+						</option>
+					</select>
 				</div>
 
-				<div class="col-md-8">
-
-					<div class="form-group">
-						<label>Category</label>
-						<select class="form-control" v-model="product.category_id" required>
-							<option v-for="category in categories" :value="category.id">
-								{{ category.name }}
-							</option>
-						</select>
-					</div>
-
-					<div class="form-group">
-						<label>Name</label>
-						<div class="input-group">
-							<input type="text" class="form-control" v-model="product.name" required="" :disabled="loading"/>
-							<div class="input-group-append" v-show="loading">
-								<span class="input-group-text">
-									<i class="fas fa-spinner fa-spin"></i>
-								</span>
-							</div>
+				<div class="form-group">
+					<label>Name</label>
+					<div class="input-group">
+						<input type="text" class="form-control" v-model="product.name" required="" :disabled="loading"/>
+						<div class="input-group-append" v-show="loading">
+							<span class="input-group-text">
+								<i class="fas fa-spinner fa-spin"></i>
+							</span>
 						</div>
 					</div>
-
-					<div class="form-group">
-						<label>Description</label>
-						<textarea v-model="product.desc" class="form-control" :disabled="loading"></textarea>
-					</div>
-
-					<div class="form-group">
-						<label>Price</label>
-						<div class="input-group">
-							<input type="text" class="form-control" v-model="product.price" required="" :disabled="loading"/>
-							<div class="input-group-append" v-show="loading">
-								<span class="input-group-text">
-									<i class="fas fa-spinner fa-spin"></i>
-								</span>
-							</div>
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label>Quantity</label>
-						<div class="input-group">
-							<div class="input-group-prepend">
-								<span @click="product.qty--" class="btn btn-primary">
-									<i class="fa fa-minus"></i>
-								</span>
-							</div>
-							<div class="form-control" style="text-align: center;">
-								<b><span>{{ product.qty }}</span> in stock</b>
-							</div>
-							<div class="input-group-append">
-								<span class="btn btn-primary" @click="product.qty++">
-									<i class="fa fa-plus"></i>
-								</span>
-							</div>
-						</div>
-					</div>
-
-					<div class="form-group float-right">
-						<button class="btn btn-primary" type="submit" :disabled="loading">Submit</button>
-						<button class="btn btn-outline-secondary" type="button" :disabled="loading" @click="$router.go(-1)">Back</button>
-					</div>
-
 				</div>
+
+				<div class="form-group">
+					<label>Description</label>
+					<textarea v-model="product.desc" class="form-control" :disabled="loading"></textarea>
+				</div>
+
+				<div class="form-group">
+					<label>Price</label>
+					<div class="input-group">
+						<input type="text" class="form-control" v-model="product.price" required="" :disabled="loading"/>
+						<div class="input-group-append" v-show="loading">
+							<span class="input-group-text">
+								<i class="fas fa-spinner fa-spin"></i>
+							</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label>Quantity</label>
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span @click="product.qty--" class="btn btn-primary">
+								<i class="fa fa-minus"></i>
+							</span>
+						</div>
+						<div class="form-control" style="text-align: center;">
+							<b><span>{{ product.qty }}</span> in stock</b>
+						</div>
+						<div class="input-group-append">
+							<span class="btn btn-primary" @click="product.qty++">
+								<i class="fa fa-plus"></i>
+							</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group float-right">
+					<button class="btn btn-primary" type="submit" :disabled="loading">Submit</button>
+					<button class="btn btn-outline-secondary" type="button" :disabled="loading" @click="$router.go(-1)">Back</button>
+				</div>
+
 
 			</form>
 
@@ -84,10 +86,33 @@
 </div>
 </template>
 
+<style>
+.img-add {
+	width: 140px;
+	height: 140px;
+	border: solid 1px gray;
+	text-align: center;
+	color: gray;
+}
+.img-add > * {
+	transform: translateY(25%);
+	font-size: 100px;
+}
+.img-add:hover {
+	color: black;
+	border-color: black;
+}
+</style>
+
 <script>
 export default{
+	created(){
+		this.log(this);
+	},
+
 	data:()=>({
 		loading: false,
+		images: [false, false, false, false, false],
 		product: {
 			category_id: 1,
 			name: '',
@@ -98,6 +123,16 @@ export default{
 	}),
 
 	methods: {
+		addImage: function () {
+			let active_image = this.active_image;
+			$('#img-'+active_image).click();
+		},
+
+		displayImage: function (i) {
+			let url = URL.createObjectURL(this.$l.getFile('img-'+i));
+			this.images.splice(i, 1, url);
+		},
+
 		submit: function () {
 			if (this.loading) return;
 			this.loading = true;
@@ -145,6 +180,12 @@ export default{
 	computed: {
 		categories: function() {
 			return this.$store.state.categories;
+		},
+		active_image: function () {
+			let images = this.images;
+			for (var i in images)
+				if (images[i]===false)
+					return i;
 		}
 	}
 }

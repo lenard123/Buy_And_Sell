@@ -53,7 +53,11 @@ class GetController extends Controller
         ])->orWhere([
             ['from', $id],
             ['to', $your_id]
-        ])->orderBy('created_at', 'asc')->get();
+        ])->orderBy('created_at', 'desc')
+          ->limit(50)
+          ->get();
+
+        $messages = array_reverse($messages->all());
 
         Message::where([
             ['from', $id],

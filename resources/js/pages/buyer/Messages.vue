@@ -8,9 +8,6 @@
                     <img :src="$l.getLink(user.image_id)" height="30" width="30" class="rounded-circle" /> 
                     <b>{{ name }}</b>
                 </div>
-                <div class="float-right">
-                    <button class="btn btn-outline-secondary" @click="getMessages()" :disabled="refresh" style="padding: 2px 5px;">{{ button }}</button>
-                </div>
             </div>
 
             <div class="message-box-body" id="messages">
@@ -76,6 +73,7 @@ export default {
                     this.refresh = false;
                     this.messages=response.data;
                     this.$nextTick(()=>$('#messages').scrollTop(10000000000000));
+                    setTimeout(this.getMessages, 1000);
                 })
                 .catch(this.log);  
         },
@@ -100,7 +98,7 @@ export default {
 
         sendFailed: function (response) {
             this.log(response);
-            this.$l.notify('Failed', 'Message not sent', 'danger');
+            this.$l.notify('Failed', 'Message not sent', 'error');
         }
     },
 

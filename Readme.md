@@ -10,4 +10,5 @@
 8. Run "php artisan passport:install" to install laravel passport.
 9. Run "php artisan key:generate" to generate application key.
 10. Run "npm run dev" to compile vue components.
-11. Finally run "php artisan serve" to start the application.
+11. Run "php artisan storage:link"
+12. Finally run "php artisan serve" to start the application.

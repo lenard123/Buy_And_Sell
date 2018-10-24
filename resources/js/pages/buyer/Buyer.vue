@@ -35,18 +35,18 @@
                     <router-link tag="li" :to="{name:'buyer-sellers'}" class="nav-item">
                         <a class="nav-link">SELLERS</a>
                     </router-link>
-                    <router-link v-if="user.role===0" tag="li" :to="{name:'buyer-cart'}" class="nav-item">
+                    <router-link v-if="user.role==0" tag="li" :to="{name:'buyer-cart'}" class="nav-item">
                         <a class="nav-link">
                             <span>CART</span>
                             <sup v-if="cart_quantity>0" class="badge badge-danger rounded-circle">{{ cart_quantity }}</sup>
                         </a>
                     </router-link>
-                    <router-link v-if="user.role===0" tag="li" :to="{name:'buyer-orders'}" class="nav-item">
+                    <router-link v-if="user.role==0" tag="li" :to="{name:'buyer-orders'}" class="nav-item">
                         <a class="nav-link">
                             <span>ORDERS</span>
                         </a>
                     </router-link>
-                    <router-link tag="li" :to="{name:'buyer-messages'}" class="nav-item" v-if="user.role===0">
+                    <router-link tag="li" :to="{name:'buyer-messages'}" class="nav-item" v-if="user.role==0">
                         <a class="nav-link">
                             <span>MESSAGES</span>
                             <sup v-if="unread_messages>0" class="badge badge-danger rounded-circle">{{ unread_messages}}</sup>
@@ -56,7 +56,7 @@
 
 
                 <div class="navbar-nav">
-                    <div class="nav-item dropdown" v-if="user.role === 0">
+                    <div class="nav-item dropdown" v-if="user.role == 0">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {{ user.fname+' '+user.lname }}
                         </a>
@@ -64,11 +64,11 @@
                             <a class="dropdown-item" href="#" onclick="$('#logout_modal').modal()">Logout</a>
                         </div>
                     </div>                  
-                    <div class="nav-item" v-if="user.role !== 0" @click="goto('signup')">
+                    <div class="nav-item" v-if="user.role != 0" @click="goto('signup')">
                         <a class="nav-link">Sign Up</a>
                     </div>
 
-                    <div v-if="user.role !== 0" class="nav-item" @click="goto('login')">
+                    <div v-if="user.role != 0" class="nav-item" @click="goto('login')">
                         <a class="nav-link">Login</a>
                     </div>
 
@@ -136,9 +136,12 @@ export default{
             axios.get(this.conf.baseurl+'api/v1/message')
                 .then((response)=>{
                     this.$store.commit('messages', response.data);
+                    setTimeout(this.getMessages, 2000)
                 })
-                .catch(this.log)
-                .then(()=>{setTimeout(this.getMessages, 2000)});
+                .catch((error)=>{
+                    if (error.response.status != 401)
+                        setTimeout(this.getMessages, 2000)
+                });
         },
 
         getCart: function () {

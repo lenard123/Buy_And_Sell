@@ -21,9 +21,9 @@ class Util extends Controller
     /**
      * @return 	{Response}	Unauthorized
      */
-    public static function unauthorized()
+    public static function unauthorized($message = 'Unauthorized')
     {
-    	return response('Unauthorized', 401);
+    	return response($message, 401);
     }
 
 	/**
@@ -37,7 +37,7 @@ class Util extends Controller
 		$file = $config['file'];
 		$default = $config['default'];
 		$directory = $config['directory'];
-		$filename = time().'.jpg';
+		$filename = rand(1000, 9999).time().'.jpg';
 
 		if (empty($request->$file))
 			$id = $default;

@@ -17,19 +17,20 @@
 
 		<div class="row">
 			<div class="col-md-3">
-				<img :src="$l.getLink(product.image_id)" width="100%" class="mb-1">
+				<img :src="$l.getLink(product.image_id)" width="130" height="130" class="mb-1">
 				<button class="btn btn-success btn-block" @click="openModal('approve')" :disabled="status=='loading'">
 					<i class="fas fa-check"></i> Approve
 				</button>
 				<button class="btn btn-danger btn-block" @click="openModal('reject')" :disabled="status=='loading'">
 					<i class="fas fa-trash"></i> Reject
 				</button>
+				<button class="btn btn-primary btn-block" @click="$router.push({name:'admin-product-details', params:{id:product.id}})">
+					View Details
+				</button>
 			</div>
 
 			<div class="col-md-6">
 				<h4>"{{ product.name }}"</h4>
-
-				<h5>{{ product.desc }}</h5>
 
 				<div class="card bg-secondary">
 					<div class="card-body">

@@ -28,7 +28,7 @@ class GetController extends Controller
     {
         $user = User::find($id);
 
-        if ($user->role === Conf::ROLE_SELLER)
+        if ($user->role == Conf::ROLE_SELLER)
             $user->seller;
 
         return $user;

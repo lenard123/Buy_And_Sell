@@ -16,7 +16,7 @@ class LoginController extends Controller
     	if ($this->chkLogin($request)) 
     		return $this->getResult($request);
     	else 
-    		return Util::err('Wrong user or pass!');
+    		return Util::unauthorized('Wrong user or pass!');
 
     }
 

@@ -2,14 +2,11 @@
 <transition name="fade">
 <div v-if="show">
 <div class="card mb-5" style="width:250px">
-	<div class="card-img-top">
-		<img :src="$l.getLink(product.image_id)" width="100%" height="200"/>
+	<div class="card-img-top product-img">
+		<img :src="$l.getLink(product.image_id)" width="100%" height="100%" @click="details()"/>
 	</div>
 	<div class="card-body">
-		<details>
-			<summary class="card-title" style="font-size: 20px;">"{{ product.name }}"</summary>
-			<pre><p>{{ product.desc }}</p></pre>		
-		</details>
+		<div class="card-title" style="font-size: 20px;">"{{ product.name }}"</div>	
 		<p>Stocks : {{ product.qty }}<br/>
 		   Price : <span style="color:lime">${{ product.price }}</span><br>
 		   Seller: <router-link :to="{name: 'buyer-sellers-profile', params:{id:product.user_id}}">{{ product.user_name }}</router-link>
@@ -41,6 +38,20 @@
 </transition>
 </template>
 
+<style>
+
+.product-img {
+	padding: 10px;
+	transition: padding .1s;
+	height: 200px;
+}
+
+.product-img:hover {
+	padding: 0px;
+}
+
+</style>
+
 <script>
 export default{
 	props:['product'],
@@ -57,6 +68,12 @@ export default{
 	},
 
 	methods: {
+		details: function() {
+			let role = this.$store.state.user.role;
+			if (role == 0)
+				this.$router.push({name:'buyer-products-details', params:{id:this.product.id}});
+		},
+
 		addToCart: function () {
 			if (!this.chkLogin()) return;
 			if (this.cart_quantity+1 > this.product.qty) 
@@ -93,9 +110,9 @@ export default{
 		},
 
 		chkLogin: function () {
-			if (this.user.role !== 0)
+			if (this.user.role != 0)
 				$('#login_modal').modal();
-			return this.user.role === 0;
+			return this.user.role == 0;
 		}
 	},
 

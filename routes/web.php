@@ -11,8 +11,12 @@
 |
 */
 
+Route::get('/api/v1/images/{id}', 'API\v1\Image\GetController');
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('api/v1/images/{id}', 'API\v1\Image\GetController');
+Route::get('/{any}', function () {
+    return view('welcome');
+})->where('any', '.*');

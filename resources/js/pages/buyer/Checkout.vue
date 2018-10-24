@@ -20,13 +20,11 @@
 				</div>
 
 				<div class="form-group">
-					<label>Address1</label>
-					<input type="text" name="address1" class="form-control" required="">
-				</div>
-
-				<div class="form-group">
-					<label>Address2</label>
-					<input type="text" name="address2" class="form-control">
+					<label>Address</label>
+					<select class="form-control" name="address1">
+						<option :value="user.buyer.address1">Address 1 : {{ user.buyer.address1 }}</option>
+						<option :value="user.buyer.address2">Address 2 : {{ user.buyer.address2 }}</option>
+					</select>
 				</div>
 
 				<div class="form-group">

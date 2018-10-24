@@ -83,7 +83,36 @@
 									</span>
 								</div>
 							</div>
-						</div>						
+						</div>
+
+						<div class="form-group" v-if="type==0">
+							<label>Address1</label>
+							<div class="input-group">
+								<input type="text" name="address1" v-model="user.address1" id="address1" class="form-control" :disabled="loading" required="" />
+								<div class="input-group-append" v-show="loading">
+									<span class="input-group-text">
+										<i class="fas fa-spinner fa-spin"></i>							
+									</span>
+								</div>
+							</div>
+						</div>	
+
+						<div class="form-group" v-if="type==0">
+							<label>Address2</label>
+							<div class="input-group">
+								<input type="text" name="address2" v-model="user.address2" id="address2" class="form-control" :disabled="loading" required="" />
+								<div class="input-group-append" v-show="loading">
+									<span class="input-group-text">
+										<i class="fas fa-spinner fa-spin"></i>							
+									</span>
+								</div>
+							</div>
+						</div>	
+
+						<div class="form-group" v-if="type==1">
+							<label>Description</label>
+							<textarea class="form-control" required="" placeholder="Add description to help your buyers trust you" v-model="user.desc"></textarea>
+						</div>				
 
 						<div class="form-group">
 							<label>Password</label>
@@ -145,9 +174,21 @@ export default {
 			email: '',
 			username : '',
 			password: '',
-			c_password: ''
+			c_password: '',
+			address1:'',
+			address2:'',
+			desc: ''
 		}
 	}),
+
+	created() {
+		let register = this.$store.state.register;
+		let user = this.user;
+		user.fname = register.fname;
+		user.lname = register.lname;
+		user.email = register.email;
+		user.username = register.username;
+	},
 
 	methods: {
 		next: function (type) {
@@ -212,8 +253,18 @@ export default {
 			data.append('password', this.user.password);
 			data.append('c_password', this.user.c_password);
 			data.append('role', this.type);
+			
 			if (image !== false)
 				data.append('image', image);
+
+
+			if (this.type==0) {
+				data.append('address1', this.user.address1);
+				data.append('address2', this.user.address2);
+			} else {
+				data.append('desc', this.user.desc);
+			}
+
 			return data;
 
 		}

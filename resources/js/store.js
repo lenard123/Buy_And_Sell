@@ -7,10 +7,15 @@ export default {
 		products: [],
 		carts: [],
 		orders: [],
-		messages: []
+		messages: [],
+		register: {}
 	},
 
 	mutations: {
+		register: function (state, register) {
+			state.register = register;
+		},
+
 		messages: function (state, messages) {
 			state.messages = messages;
 		},

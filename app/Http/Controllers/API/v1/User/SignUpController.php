@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Util;
 use App\Model\User;
 use App\Model\Seller;
+use App\Model\Buyer;
 
 class SignUpController extends Controller
 {
@@ -28,7 +29,9 @@ class SignUpController extends Controller
         $user->save();
 
         if ($user->role == Conf::ROLE_SELLER)
-            Seller::create(['user_id'=>$user->id]);
+            Seller::create(['user_id'=>$user->id, 'desc' => $request->desc]);
+        elseif ($user->role == Conf::ROLE_BUYER)
+            Buyer::create(['user_id'=>$user->id, 'address1'=>$request->address1, 'address2' => $request->address2]);
 
         return $user;
 
@@ -85,7 +88,19 @@ class SignUpController extends Controller
             'image' => 'nullable|image',
     		'email' => 'required|email',
     		'lname' => 'required',
-    		'fname' => 'required'
+    		'fname' => 'required',
+            'role' => 'required'
     	]);
+
+        if ($request->role == Conf::ROLE_BUYER) 
+            $this->validate($request, [
+                'address1' => 'required',
+                'address2' => 'required'
+            ]);
+
+        if ($request->role == Conf::ROLE_SELLER)
+            $this->validate($request, [
+                'desc' => 'required'
+            ]);
     }
 }

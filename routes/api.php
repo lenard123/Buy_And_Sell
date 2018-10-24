@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Conf;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,9 +14,17 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return response($request->user());
+
+Route::prefix('')->group(function(){
+	Route::middleware('auth:api')->get('/user', function (Request $request) {
+		$user = $request->user();
+		if ($user->role==Conf::ROLE_BUYER)
+			$user->buyer;
+	    return response($user);
+	});
 });
+
+
 
 
 Route::prefix('v1')->group(function () {
@@ -30,6 +39,7 @@ Route::prefix('v1')->group(function () {
 
 	//Products
 	Route::get('product', 'API\v1\Product\GetController');
+	Route::get('product/{id}', 'API\v1\Product\GetController@show');
 	Route::get('user/{id}/product', 'API\v1\Product\GetController@user');
 
 	Route::middleware('auth:api')->group(function () {

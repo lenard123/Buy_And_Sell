@@ -24,15 +24,19 @@ class AddController extends Controller
     {
     	$product = new Product;
     	$product->fill($request->all());
-    	$product->user_id = $request->user()->id;
-    	$product->image_id = $this->getImageId($request);
+    	$product->user_id   = $request->user()->id;
+        $product->image_id  = $this->getImageId($request, 'image1');
+        $product->image1_id = $this->getImageId($request, 'image2');
+        $product->image2_id = $this->getImageId($request, 'image3');
+        $product->image3_id = $this->getImageId($request, 'image4');
+        $product->image4_id = $this->getImageId($request, 'image5');
     	$product->save();
     	return $product;
     }
 
-    private function getImageId($request)
+    private function getImageId($request, $file)
     {
-    	$config['file'] = 'image';
+    	$config['file'] = $file;
     	$config['directory'] = 'images/product';
     	$config['default'] = Conf::IMAGE_PRODUCT;
     	return Util::getImageId($request, $config);	

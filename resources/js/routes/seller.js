@@ -6,6 +6,7 @@ const CategoryUpdate = () => import(/* webpackChunkName: "./js/seller" */'../pag
 
 const Products = ()=> import(/* webpackChunkName: "./js/seller" */'../pages/seller/Products.vue');
 const ProductsAdd = () => import(/* webpackChunkName: "./js/seller" */'../pages/seller/ProductsAdd.vue');
+const ProductsDetail = () => import(/* webpackChunkName: "./js/seller" */'../pages/seller/ProductsDetail.vue');
 
 const Orders = () => import(/* webpackChunkName: "./js/seller" */'../pages/seller/Order.vue');
 const OrderDetails = () => import(/* webpackChunkName: "./js/seller" */'../pages/seller/OrderDetails.vue');
@@ -64,6 +65,12 @@ export default {
 					next({name:'seller-products'});
 				next();
 			}
+		},
+
+		{
+			path: 'products/:id/details',
+			component: ProductsDetail,
+			name: 'seller-products-detail'
 		},
 
 		{

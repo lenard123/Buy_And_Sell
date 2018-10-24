@@ -3,6 +3,7 @@ const Category = ()=> import(/* webpackChunkName: "./js/admin" */'../pages/admin
 const CategoryAdd = ()=>import(/* webpackChunkName: "./js/admin" */'../pages/admin/CategoryAdd.vue');
 const CategoryUpdate = ()=>import(/* webpackChunkName: "./js/admin" */'../pages/admin/CategoryUpdate.vue');
 const Home = ()=>import(/* webpackChunkName: "./js/admin" */'../pages/admin/Home.vue');
+const ProductDetails = () => import(/* webpackChunkName: "./js/admin" */'../pages/seller/ProductsDetail.vue');
 
 export default	{
 	path: '/admin',
@@ -44,6 +45,12 @@ export default	{
 					next({name:'admin-category'})
 				next();
 			}
+		},
+
+		{
+			path: 'product/:id',
+			name: 'admin-product-details',
+			component: ProductDetails
 		}
 	]
 }

@@ -8,7 +8,8 @@ class Product extends Model
 {
     protected $fillable = [
     	'id', 'category_id', 'image_id', 
-    	'name', 'desc', 'price', 'qty'
+        'image1_id', 'image2_id', 'image3_id',
+    	'image4_id', 'name', 'desc', 'price', 'qty'
     ];
     protected $guarded = ['status', 'user_id'];
 }

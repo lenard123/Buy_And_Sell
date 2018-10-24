@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Util;
 use App\Model\Product;
+use App\Model\Category;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 
 class GetController extends Controller
@@ -15,6 +17,7 @@ class GetController extends Controller
 
     public function __construct (Request $request) 
     {
+        Log::debug(json_encode(\App\Model\Image::all()));
         if ($request->status != 'approve')
             $this->middleware('auth:api');
     }
@@ -55,6 +58,14 @@ class GetController extends Controller
         return $this->getProduct($params);
     }
 
+    public function show (int $id) : Product {
+        $product = Product::find($id);
+        $product->category_name = Category::find($product->category_id)
+                                            ->name;
+        $product->desc;
+        return $product;
+    }
+
     public function rejected ($request)
     {
         if (Auth::user()->can('viewRejected', Product::class))
@@ -86,11 +97,28 @@ class GetController extends Controller
 
     private function getProduct($param, $pp = 5)
     {
-        //SELECT * FROM PRODUCTS INNER JOIN USERS ON PRODUCTS.USER_ID=USER.ID
-        return Product::select('products.*', DB::raw('concat(users.fname," ", users.lname) as user_name'), DB::raw('users.image_id as user_image_id'))
-            ->join('users', 'users.id', '=', 'products.user_id')
-            ->where($param)
-            ->latest()
-            ->paginate($pp);
+        $product = Product::select('products.id')
+                            ->addSelect('category_id')
+                            ->addSelect('products.image_id')
+                            ->addSelect('image1_id')
+                            ->addSelect('image2_id')
+                            ->addSelect('image3_id')
+                            ->addSelect('image4_id')
+                            ->addSelect('name')
+                            ->addSelect('price')
+                            ->addSelect('qty')
+                            ->addSelect('user_id')
+                            ->addSelect('status')
+                            ->addSelect(
+                                DB::raw('users.fname as user_name')
+                              )
+                            ->addSelect(
+                                DB::raw('users.image_id as user_image_id')
+                              )
+                            ->join('users', 'users.id', '=', 'products.user_id')
+                            ->where($param)
+                            ->orderBy('products.created_at', 'desc')
+                            ->paginate($pp);
+        return $product;
     }
 }

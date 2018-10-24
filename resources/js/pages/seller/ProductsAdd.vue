@@ -8,7 +8,9 @@
 			<form @submit.prevent="submit()">
 
 				<div class="form-group d-flex" style="overflow-x: auto;">
-					<img :src="image" v-for="image in images" v-if="image !== false" height="140" width="140" class="thumbnail" style=" margin: 0px 3px;" />
+					<div style="margin: 0px 3px;" v-for="(image,i) in images" v-if="image !== false">
+						<img :src="view(i)" height="140" width="140" class="thumbnail"  />
+					</div>
 					<div class="img-add" @click="addImage()" v-if="active_image<images.length" style=" margin: 0px 3px;">
 						<i class="fas fa-plus"></i>
 					</div>
@@ -129,8 +131,9 @@ export default{
 		},
 
 		displayImage: function (i) {
-			let url = URL.createObjectURL(this.$l.getFile('img-'+i));
-			this.images.splice(i, 1, url);
+			let file = this.$l.getFile('img-'+i);
+			if (file !== false)
+				this.images.splice(i, 1, true);
 		},
 
 		submit: function () {
@@ -158,15 +161,28 @@ export default{
 
 		getData: function () {
 			let data = new FormData();
-			let image = this.$l.getFile('image');
+			let images = this.images;
 			data.append('category_id', this.product.category_id);
 			data.append('name', this.product.name);
 			data.append('desc', this.product.desc);
 			data.append('price', this.product.price);
 			data.append('qty', this.product.qty);
-			if (image !== false)
-				data.append('image', image);
+
+			let image = 1;
+			for (var i in images) {
+				if (images[i] !== false) {
+					let file = this.$l.getFile('img-'+i);
+					data.append('image'+image, file);
+					image++;
+				}
+			}
+
 			return data;
+		},
+
+		view: function (i) {
+			let file = this.$l.getFile('img-'+i);
+			return URL.createObjectURL(file);
 		}
 	},
 

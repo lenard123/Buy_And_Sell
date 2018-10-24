@@ -76,7 +76,7 @@
 								<button class="btn btn-primary">
 									<i class="fas fa-edit"></i>Update
 								</button>
-								<button class="btn btn-info">View Details</button>
+								<router-link :to="{name:'seller-products-detail', params:{id:product.id}}" class="btn btn-info">View Details</router-link>
 								<button class="btn btn-outline-danger">
 									<i class="fas fa-trash"></i>Delete
 								</button>

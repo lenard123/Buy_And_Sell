@@ -9,6 +9,7 @@ const Sellers = ()=>import(/* webpackChunkName: "./js/buyer" */'../pages/buyer/S
 const SellerProfile = () => import(/* webpackChunkName: "./js/buyer" */'../pages/buyer/SellerProfile.vue');
 const MessagesList = () => import(/* webpackChunkName: "./js/buyer" */'../pages/buyer/MessagesList.vue');
 const Messages = () => import(/* webpackChunkName: "./js/buyer" */'../pages/buyer/Messages.vue');
+const ProductsDetail = () => import(/* webpackChunkName: "./js/buyer" */'../pages/seller/ProductsDetail.vue');
 
 export default {
 	path: '/',
@@ -76,6 +77,12 @@ export default {
 					next();
 				else next({name:'buyer-home'});
 			}
+		},
+
+		{
+			path: 'products/:id',
+			component: ProductsDetail,
+			name: 'buyer-products-details'
 		},
 
 		{

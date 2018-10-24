@@ -24,7 +24,7 @@ class ProductPolicy
 
     public function create (User $user)
     {
-        return $user->role == Conf::ROLE_SELLER && Seller::where('user_id', $user->id)->first()->status=='active';
+        return $user->role == Conf::ROLE_SELLER;
     }
 
     public function reject (User $user, Product $product)

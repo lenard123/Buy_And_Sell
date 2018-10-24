@@ -14,7 +14,7 @@ class AlterColumnsFromOrdersTable extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->integer('seller_id')->unsigned();
+            $table->integer('seller_id')->unsigned()->default(0);
             $table->foreign('seller_id')->references('id')->on('users');
         });
     }
@@ -27,7 +27,8 @@ class AlterColumnsFromOrdersTable extends Migration
     public function down()
     {
         Schema::table('orders', function (Blueprint $table) {
-            //
+            $table->dropForeign(['seller_id']);
+            $table->dropColumn('seller_id');
         });
     }
 }

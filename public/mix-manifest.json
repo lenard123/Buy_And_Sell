@@ -1,9 +1,9 @@
 {
-    "/./js/buyer.js": "/./js/buyer.js",
     "/./js/seller.js": "/./js/seller.js",
+    "/./js/buyer.js": "/./js/buyer.js",
     "/./js/admin.js": "/./js/admin.js",
-    "/./js/signup.js": "/./js/signup.js",
     "/./js/login.js": "/./js/login.js",
+    "/./js/signup.js": "/./js/signup.js",
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css"
 }

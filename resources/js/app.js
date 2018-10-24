@@ -30,8 +30,10 @@ Vue.component('product-card', require('./components/ProductCard.vue'));
 Vue.component('product-item', require('./components/ProductItem.vue'));
 Vue.component('cart-item', require('./components/CartItem.vue'));
 Vue.component('order', require('./components/Order.vue'));
+Vue.component('top', require('./components/top.vue'));
 
 const router = new VueRouter({
+    mode: 'history',
 	routes,
 	linkActiveClass: 'active'
 });
